@@ -14,6 +14,7 @@
   max-width: 50%;
   bottom: 10%;
   left: 6vw;
+  animation: fadeIn 3s;
 }
 .header-content h2 {
   font-weight: 500;
@@ -26,7 +27,7 @@
 }
 .header-content button {
   border: none;
-  color: cyan;
+  color: rgb(120, 150, 150);
   font-weight: 500;
   padding: 1vw 2.3vw;
   background-color: white;
