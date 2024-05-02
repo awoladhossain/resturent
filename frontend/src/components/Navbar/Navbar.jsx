@@ -1,14 +1,17 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { assets } from "../../assets/food del assets/frontend_assets/assets";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
 
   return (
     <div className="navbar">
-      <img src={assets.logo} alt="" className="logo" />
+      <Link to="/">
+        <img src={assets.logo} alt="" className="logo" />
+      </Link>
       <ul className="navbar-menu">
         <Link
           to="/"
@@ -42,10 +45,12 @@ const Navbar = () => {
       <ul className="navbar-right">
         <img src={assets.search_icon} alt="" />
         <div className="navbar-search-icon">
-          <img src={assets.basket_icon} alt="" />
+          <Link to="/cart">
+            <img src={assets.basket_icon} alt="" />
+          </Link>
           <div className="dot"> </div>
         </div>
-        <button>sing in </button>
+        <button onClick={() => setShowLogin(true)}>sing in </button>
       </ul>
     </div>
   );
