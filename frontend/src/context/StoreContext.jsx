@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { food_list } from "../assets/food del assets/frontend_assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
+  const url = "http://localhost:4000";
+  const [storeToken, setStoreToke] = useState("");
+
   // Load cart items from local storage
   // const loadCartItems = () => {
   //   const storedCartItems = localStorage.getItem("cartItems");
@@ -48,6 +51,13 @@ const StoreContextProvider = ({ children }) => {
     return totalAmount;
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setStoreToke(localStorage.getItem("token"));
+    }
+  }, []);
+  
+
   const contextValue = {
     food_list,
     cartItems,
@@ -55,6 +65,9 @@ const StoreContextProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
+    url,
+    storeToken,
+    setStoreToke,
   };
   return (
     <StoreContext.Provider value={contextValue}>

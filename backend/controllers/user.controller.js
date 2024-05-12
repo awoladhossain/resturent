@@ -5,12 +5,32 @@ import validator from "validator";
 
 // login User::
 
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: "User Not exists" });
+    }
+    const isMatchPassword = await bcrypt.compare(password, user.password);
+    if (!isMatchPassword) {
+      return res.json({
+        success: false,
+        message: "Enter the correct password",
+      });
+    }
+    const token = createToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Failed to Login" });
+  }
+};
 
 // create token:::::
 
 const createToken = (id) => {
-  return jwt.sign({id},process.env.JWT_SECRET);
+  return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
 // register user
@@ -27,7 +47,7 @@ const registerUser = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.json({
         success: false,
-        message: "Please enter an valid Email",
+        message: "Please enter a valid Email",
       });
     }
 
@@ -48,7 +68,12 @@ const registerUser = async (req, res) => {
     });
 
     const user = await newUser.save();
-  } catch (error) {}
+    const token = createToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Failed to Register" });
+  }
 };
 
 export { loginUser, registerUser };
